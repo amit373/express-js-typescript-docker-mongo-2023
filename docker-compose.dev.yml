@@ -1,0 +1,72 @@
+# 1) docker compose --env-file .env.development build
+# 2) docker compose --env-file .env.development up
+
+version: "3.9"
+
+services:
+  nginx:
+    container_name: nginx-development
+    image: nginx-development
+    ports:
+      - "80:80"
+      - "443:443"
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+      args: 
+        - PORT=${PORT}
+        - NGINX_SERVER_NAME={NGINX_SERVER_NAME}
+        - NGINX_SERVER_HOST={NGINX_SERVER_HOST}
+    volumes:
+      - ./nginx.conf.template:/etc/nginx/nginx.conf.template
+    restart: "unless-stopped"
+    networks:
+      - app-network
+
+  backend-service:
+    container_name: backend-service-development
+    image: backend-service-development
+    ports:
+      - ${PORT}:${PORT}
+    environment:
+      - DB_HOST=${DB_HOST} 
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+      args: 
+        - NODE_ENV=${NODE_ENV}
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: "always"
+    command: npm run start:dev
+    networks:
+      - app-network
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    
+  mongo:
+    container_name: mongo-development
+    image: mongo:5.0.6
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    environment:
+      - DB_HOST=${DB_HOST} 
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+    volumes:
+      - mongodata:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongodata:

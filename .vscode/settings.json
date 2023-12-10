@@ -1,0 +1,7 @@
+{
+  "cSpell.words": ["asynciterable", "autorestart", "codepaths", "Parens", "tsbuildinfo"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.formatOnSave": false
+}
