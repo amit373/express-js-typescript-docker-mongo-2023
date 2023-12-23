@@ -1,5 +1,14 @@
 {
-  "cSpell.words": ["asynciterable", "autorestart", "codepaths", "Parens", "tsbuildinfo"],
+  "cSpell.words": [
+    "asynciterable",
+    "autorestart",
+    "codepaths",
+    "commitlint",
+    "logform",
+    "Parens",
+    "tsbuildinfo",
+    "tsyringe"
+  ],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
