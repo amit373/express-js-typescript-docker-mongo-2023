@@ -18,7 +18,7 @@ export const validate =
       params: false,
     },
   ) =>
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     try {
       await schema.parseAsync({
         ...(options?.body && { body: req?.body as T }),
