@@ -52,3 +52,12 @@ export const HttpStatus = {
   SERVICE_UNAVAILABLE: 503,
   GATEWAY_TIMEOUT: 504,
 } as const;
+
+export const Locale = {
+  EN: 'en',
+  HI: 'hi',
+} as const;
+
+export const ApiVersions = {
+  V1: 'v1',
+} as const;

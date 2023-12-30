@@ -7,7 +7,7 @@ import { config } from '@app/config';
 import { utilities } from './logger.utils';
 
 // logs dir
-const logDir: string = join(__dirname, config.app.LOGS_DIR);
+const logDir: string = join(__dirname, config.app.LOGS.DIR);
 
 if (!existsSync(logDir)) {
   mkdirSync(logDir);

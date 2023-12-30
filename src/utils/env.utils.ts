@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-import { Env } from '@app/interfaces';
+import { type Env } from '@app/interfaces';
 
 /**
  * @method loadEnv
@@ -82,7 +82,7 @@ export const getEnv = (
     toInteger: false,
     toNumber: false,
   },
-) => {
+): string | number | boolean => {
   const value = process?.env[key] ?? '';
   if (isEmpty(value)) {
     throw new Error(`[ENV] ${key} is not set.`);
@@ -126,7 +126,7 @@ export const toNumber = (val: string): number => {
  * @returns {Number} true & false
  * @description this value is toInteger Check
  */
-export const toInteger = (val: any): number => {
+export const toInteger = (val: string): number => {
   if (Number.isNaN(Number.parseInt(val, 10))) {
     return 0;
   }

@@ -1,5 +1,5 @@
 import { config } from '@app/config';
-import { Format, TransformableInfo } from 'logform';
+import { type Format, type TransformableInfo } from 'logform';
 import { format } from 'winston';
 
 export interface ConsoleFormatOptions {
@@ -26,6 +26,7 @@ const colorScheme: Record<string, Colorizer> = {
   verbose: clc.cyanBright,
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const getValidValues = (context = null) => {
   if (!context) {
     return {
@@ -53,6 +54,7 @@ const getValidValues = (context = null) => {
 };
 
 const getFormattedLogs = (appName = 'Node', data: any = null): string => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const values = getValidValues(data?.context);
 
   if (data?.context && !values.isValidString) {
@@ -67,7 +69,7 @@ const getFormattedLogs = (appName = 'Node', data: any = null): string => {
   }
 };
 
-const getContext = (context: any) => {
+const getContext = (context: null | undefined): string => {
   const values = getValidValues(context);
 
   if (values?.isValidString === null) {
@@ -76,9 +78,9 @@ const getContext = (context: any) => {
 
   if (!values?.isValidString) {
     const { code, method, controller, _function } = values;
-    return `${clc.yellow(controller!)}${clc.green(code!)}${clc.green(method!)}${clc.green(_function!)} `;
+    return `${clc.yellow(controller!)}${clc.green(code!)}${clc.green(method!)}${clc.green(_function!)}`;
   } else {
-    return `${clc.yellow(values?.context!)} `;
+    return `${clc.yellow(values.context!)}`;
   }
 };
 
@@ -93,19 +95,23 @@ const consoleFormat = (
     const { context, level, message, ms } = args;
     let { timestamp } = args;
 
-    if (timestamp && timestamp === new Date(timestamp).toISOString()) {
-      timestamp = new Date(timestamp).toLocaleString();
+    if (timestamp && timestamp === new Date(timestamp as number).toISOString()) {
+      timestamp = new Date(timestamp as number).toLocaleString();
     }
 
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     const color = (options.colors && colorScheme[level]) || ((text: string): string => text);
     const yellow = options.colors ? clc.yellow : (text: string): string => text;
 
     const _appName = color(`[${appName}]`) + ' ';
-    const _ms = ms ? ` ${yellow(ms)}` : '';
+    const _ms = ms ? ` ${yellow(ms as string)}` : '';
     const _timestamp = timestamp ? `${timestamp} ` : '';
     const _level = `${yellow(level?.charAt(0).toUpperCase() + level?.slice(1))}\t`;
 
-    return _appName + _level.trimEnd() + ' ' + clc.green('-') + ' ' + _timestamp + '' + getContext(context) + `${color(message)} - ` + _ms;
+    return (
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      _appName + _level.trimEnd() + ' ' + clc.green('-') + ' ' + _timestamp + '' + getContext(context) + '' + `${color(message as string)} - ` + _ms
+    );
   });
 
 export const utilities = {

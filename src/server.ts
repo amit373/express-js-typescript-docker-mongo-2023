@@ -1,48 +1,55 @@
-import 'reflect-metadata'; // Don't change order always import first
+import 'reflect-metadata'; // Always import first
+import { container } from 'tsyringe';
+import { type Server } from 'http';
 import { config } from '@app/config';
 import { LoggerService } from '@app/libs';
-import { Server } from 'http';
-import { container } from 'tsyringe';
+
+import App from './app';
 
 const loggerService = container.resolve(LoggerService);
 let server: Server;
 
 /**
- * @description Start NodeJS server...
- * @return {Void}
+ * Start NodeJS server...
  */
 async function bootstrap(): Promise<void> {
   try {
-    loggerService.info('Database connected 🔥');
-    loggerService.info(`🚀 Server listening on the port:${config.app.PORT} ENV: ${config.app.NODE_ENV} mode...`, {
-      controller: 'server.ts',
-      function: 'bootstrap',
+    App.listen(config.app.PORT, () => {
+      loggerService.info('Database connected 🔥');
+      loggerService.info(`🚀 Server listening on port ${config.app.PORT} ENV: ${config.app.NODE_ENV} mode...`, {
+        controller: 'server.ts',
+        function: 'bootstrap',
+      });
     });
   } catch (error: any) {
-    loggerService.error(`Database not connected: ${error?.message}`, {
-      controller: 'server.ts',
-      function: 'bootstrap',
-    });
-    process.exit(1);
+    handleStartupError(error);
   }
 }
 
 /**
- * @description Handle Signal and unknown errors.
+ * Handle startup errors.
+ * @param {Error} error
+ */
+function handleStartupError(error: any): void {
+  loggerService.error(`Database not connected: ${error?.message}`, {
+    controller: 'server.ts',
+    function: 'bootstrap',
+  });
+  process.exit(1);
+}
+
+/**
+ * Handle Signal and unknown errors.
  * @param {String} event
  * @param {any} payload
  * @param {'error' | 'code' | 'signal'} type
- * @return {Void}
  */
 function handleShutDownError(event: string, payload: any, type: 'error' | 'code' | 'signal'): void {
-  console.log(`👋 ${event?.toLocaleUpperCase()} RECEIVED. Shutting down gracefully`);
-  if (type === 'error' && (payload as {})) {
-    loggerService.info(`${event.toLocaleUpperCase()}! ${payload?.name}: ${payload?.message}`, {
-      controller: 'index.ts [Root]',
-      function: 'handleShutDownError',
-    });
-
-    loggerService.error(`${event.toLocaleUpperCase()}! ${payload?.name}: ${payload?.message}`);
+  console.log(`👋 ${event?.toUpperCase()} RECEIVED. Shutting down gracefully`);
+  if (type === 'error' && payload) {
+    const errorMessage = `${event.toUpperCase()}! ${payload?.name}: ${payload?.message}`;
+    loggerService.info(errorMessage, { controller: 'server.ts [Root]', function: 'handleShutDownError' });
+    loggerService.error(errorMessage);
   }
   server?.close(() => {
     console.log('💥 Process terminated!');
@@ -50,11 +57,18 @@ function handleShutDownError(event: string, payload: any, type: 'error' | 'code'
   });
 }
 
-process.on('exit', (code: number) => handleShutDownError('exit', code, 'code'));
-process.on('SIGINT', (signal: NodeJS.Signals) => handleShutDownError('SIGINT', signal, 'signal'));
-process.on('SIGUSR1', (signal: NodeJS.Signals) => handleShutDownError('SIGUSR1', signal, 'signal'));
-process.on('SIGTERM', (signal: NodeJS.Signals) => handleShutDownError('SIGTERM', signal, 'signal'));
-process.on('SIGQUIT', (signal: NodeJS.Signals) => handleShutDownError('SIGQUIT', signal, 'signal'));
-process.on('unhandledRejection', (reason: unknown) => handleShutDownError('unhandledRejection', reason, 'error'));
+// Register event handlers
+process.on('exit', (code: number) => {
+  handleShutDownError('exit', code, 'code');
+});
+['SIGINT', 'SIGUSR1', 'SIGTERM', 'SIGQUIT'].forEach(signal =>
+  process.on(signal, (s: NodeJS.Signals) => {
+    handleShutDownError(signal, s, 'signal');
+  }),
+);
+process.on('unhandledRejection', (reason: unknown) => {
+  handleShutDownError('unhandledRejection', reason, 'error');
+});
 
+// Start the server
 void bootstrap();
