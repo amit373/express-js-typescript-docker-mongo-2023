@@ -1,9 +1,11 @@
-import { NextFunction, Request, Response } from 'express';
-import i18next from 'i18next';
+import { type Request, type Response } from 'express';
 import { injectable } from 'tsyringe';
 
+import { asyncHandler } from '@app/middlewares';
+import { BaseController } from '@app/utils';
+
 @injectable()
-export class IndexController {
+export class IndexController extends BaseController {
   /**
    * @swagger
    *
@@ -18,16 +20,10 @@ export class IndexController {
    *       200:
    *         description: success
    */
-  public index(_: Request, res: Response, next: NextFunction) {
-    try {
-      return res.status(200).json({
-        status: 200,
-        message: i18next.t('STATUS.OK'),
-      });
-    } catch (error) {
-      return next(error);
-    }
-  }
+  index = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    this.setSuccessData();
+    this.sendResponse(req, res);
+  });
 }
 
 export default IndexController;

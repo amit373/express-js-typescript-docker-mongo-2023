@@ -17,14 +17,6 @@ const swaggerDefinition = {
       name: 'Health',
       description: '',
     },
-    {
-      name: 'Auth',
-      description: 'API for auth',
-    },
-    {
-      name: 'Users',
-      description: 'API for users',
-    },
   ],
   schemes: ['http', 'https'],
   securityDefinitions: {

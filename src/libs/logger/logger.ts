@@ -1,58 +1,53 @@
 import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
-import { createLogger, format, transports } from 'winston';
+import { createLogger, format, transports as Transports } from 'winston';
 import WinstonDaily from 'winston-daily-rotate-file';
 import { config } from '@app/config';
 
 import { utilities } from './logger.utils';
+import { loadEnv, toBool, toNumber } from '@app/utils';
 
-// logs dir
-const logDir: string = join(__dirname, config.app.LOGS.DIR);
+if (!config) loadEnv();
+
+const LOGS_DIR = (process.env as any)?.LOGS_DIR as string;
+const APP_NAME = (process.env as any).APP_NAME as string;
+const LOG_STORE = toBool((process.env as any).LOG_STORE as string);
+const LOG_MAX_FILES = toNumber((process.env as any).LOG_MAX_FILES as string);
+
+const logDir = join(__dirname, LOGS_DIR);
 
 if (!existsSync(logDir)) {
   mkdirSync(logDir);
 }
 
-/*
- * Log Level
- * error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6
- */
+const transports = [];
+if (LOG_STORE) {
+  const commonOptions = {
+    level: 'debug',
+    datePattern: 'YYYY-MM-DD',
+    filename: '%DATE%.log',
+    maxFiles: LOG_MAX_FILES,
+    json: false,
+    zippedArchive: true,
+  };
+  transports.push(new WinstonDaily({ ...commonOptions, dirname: join(logDir, 'debug') }));
+  transports.push(new WinstonDaily({ ...commonOptions, dirname: join(logDir, 'error'), handleExceptions: true }));
+}
+
 const logger = createLogger({
   format: format.combine(
     format.timestamp(),
-    format.printf(info => utilities.format.getFormattedLogs(config.app.APP_NAME, info)),
+    format.printf(info => utilities.format.getFormattedLogs(APP_NAME, info)),
   ),
-  transports: [
-    // debug log setting
-    new WinstonDaily({
-      level: 'debug',
-      datePattern: 'YYYY-MM-DD',
-      dirname: logDir + '/debug', // log file /logs/debug/*.log in save
-      filename: '%DATE%.log',
-      maxFiles: 30, // 30 Days saved
-      json: false,
-      zippedArchive: true,
-    }),
-    // error log setting
-    new WinstonDaily({
-      level: 'error',
-      datePattern: 'YYYY-MM-DD',
-      dirname: logDir + '/error', // log file /logs/error/*.log in save
-      filename: '%DATE%.log',
-      maxFiles: 30, // 30 Days saved
-      handleExceptions: true,
-      json: false,
-      zippedArchive: true,
-    }),
-  ],
+  transports,
 });
 
 logger.add(
-  new transports.Console({
+  new Transports.Console({
     format: format.combine(
       format.timestamp(),
       format.ms(),
-      utilities.format.consoleFormat(config.app.APP_NAME, {
+      utilities.format.consoleFormat(APP_NAME, {
         colors: true,
         prettyPrint: true,
       }),

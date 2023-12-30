@@ -4,7 +4,7 @@ import { getEnv, loadEnv } from '@app/utils';
 loadEnv();
 
 export default {
-  APP_NAME: 'ExpressJS',
+  APP_NAME: (getEnv('APP_NAME') as string) || 'ExpressJS',
   PORT: getEnv('PORT', { toNumber: true }) as number,
   NODE_ENV: getEnv('NODE_ENV'),
   isDevelopment: getEnv('NODE_ENV') === NodeEnv.DEVELOPMENT,
@@ -19,7 +19,9 @@ export default {
   },
   LOGS: {
     FORMAT: 'dev',
-    DIR: '../../logs',
+    DIR: (getEnv('LOG_DIR') as string) || '../../logs',
+    MAX_FILES: (getEnv('LOG_MAX_FILES', { toNumber: true }) as number) || 30,
+    LOG_STORE: (getEnv('LOG_STORE', { toBool: true }) as boolean) || false,
   },
   RATE_LIMIT: {
     MAX: 100,

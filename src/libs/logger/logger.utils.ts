@@ -110,7 +110,7 @@ const consoleFormat = (
 
     return (
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      _appName + _level.trimEnd() + ' ' + clc.green('-') + ' ' + _timestamp + '' + getContext(context) + '' + `${color(message as string)} - ` + _ms
+      _appName + _level.trimEnd() + ' ' + clc.green('-') + ' ' + _timestamp + ' ' + getContext(context) + '' + `${color(message as string)} - ` + _ms
     );
   });
 
