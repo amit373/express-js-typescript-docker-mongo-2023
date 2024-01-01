@@ -2,10 +2,10 @@ import { type Request, type Response } from 'express';
 import { injectable } from 'tsyringe';
 
 import { asyncHandler } from '@app/middlewares';
-import { BaseController } from '@app/utils';
+import { Controller } from '@app/utils';
 
 @injectable()
-export class IndexController extends BaseController {
+export class IndexController extends Controller {
   /**
    * @swagger
    *
@@ -25,5 +25,3 @@ export class IndexController extends BaseController {
     this.sendResponse(req, res);
   });
 }
-
-export default IndexController;

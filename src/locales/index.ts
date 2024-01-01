@@ -15,4 +15,5 @@ export const i18nextConfig = {
   preload: [Locale.EN, Locale.HI],
   saveMissing: false,
   fallbackLng: Locale.EN,
+  escapeValue: false,
 } as const;

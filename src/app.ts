@@ -36,17 +36,17 @@ function initI18Next(): void {
 }
 
 function initializeMiddlewares(): void {
-  app.use(cors({ origin: config.app.CORS.ORIGIN, credentials: config.app.CORS.CREDENTIALS }));
+  app.use(cors({ origin: config.CORS.ORIGIN, credentials: config.CORS.CREDENTIALS }));
   app.use(hpp());
   app.use(helmet());
   app.use(compression());
   app.use(express.json());
-  app.use(express.urlencoded({ extended: config.app.EXTENDED }));
+  app.use(express.urlencoded({ extended: config.EXTENDED }));
   app.use(cookieParser());
   app.use(
     rateLimit({
-      max: config.app.RATE_LIMIT.MAX,
-      windowMs: config.app.RATE_LIMIT.WINDOW__MS,
+      max: config.RATE_LIMIT.MAX,
+      windowMs: config.RATE_LIMIT.WINDOW__MS,
       message: i18next.t('ERROR.TO_MANY_REQUEST'),
     }),
   );
@@ -57,7 +57,7 @@ function initializeRoutes(): void {
 }
 
 function initializeSwagger(): void {
-  app.use(`${config.app.SWAGGER_URL}/${ApiVersions.V1}`, swaggerUi.serve, swaggerUi.setup(swaggerSpecsV1));
+  app.use(`${config.SWAGGER_URL}/${ApiVersions.V1}`, swaggerUi.serve, swaggerUi.setup(swaggerSpecsV1));
 }
 
 function initializeErrorHandling(): void {

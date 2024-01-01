@@ -10,12 +10,16 @@ const swaggerDefinition = {
     version: '1.0.0',
     description: 'Example docs',
   },
-  host: `localhost:${config.app.PORT}`,
-  basePath: `${config.app.BASE_URL}/${ApiVersions.V1}`,
+  host: `localhost:${config.PORT}`,
+  basePath: `${config.BASE_URL}/${ApiVersions.V1}`,
   tags: [
     {
       name: 'Health',
       description: '',
+    },
+    {
+      name: 'Auth',
+      description: 'API for auth',
     },
   ],
   schemes: ['http', 'https'],

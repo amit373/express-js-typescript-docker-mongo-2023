@@ -31,7 +31,7 @@ const sendError = (err: IError, req: Request, res: Response): Response<any, Reco
   const message: string = i18next.t(err.message);
   const status = (err as any).status as number;
   const { method, path } = req;
-  if (config.app.isDevelopment) {
+  if (config.isDevelopment) {
     console.error('Error 💥', {
       status,
       method,

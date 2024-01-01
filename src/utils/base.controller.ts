@@ -13,7 +13,7 @@ interface ResponseData<T = any> {
 
 const loggerService = container.resolve(LoggerService);
 
-export class BaseController<T = any> {
+export class Controller<T = any> {
   protected responseData: ResponseData<T> = {
     success: false,
     status: HttpStatus.OK,

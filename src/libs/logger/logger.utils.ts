@@ -87,7 +87,7 @@ const getContext = (context: null | undefined): string => {
 const consoleFormat = (
   appName = 'Node',
   options: ConsoleFormatOptions = {
-    colors: !config.app.NO_COLOR,
+    colors: !config.NO_COLOR,
     prettyPrint: false,
   },
 ): Format =>

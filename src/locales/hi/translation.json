@@ -27,7 +27,18 @@
     "INTERNAL_SERVER_ERROR": "आंतरिक सर्वर त्रुटि",
     "NOT_IMPLEMENTED": "लागू नहीं किया गया",
     "BAD_GATEWAY": "खराब गेटवे",
-    "SERVICE_UNAVAILABLE": "सेवा अनुपलब्ध है",
-    "GATEWAY_TIMEOUT": "गेटवे समय समाप्त"
+    "SERVICE_UNAVAILABLE": "सेवा अनुपलब्ध है"
+  },
+    "VALIDATION": {
+    "EMAIL": {
+      "REQUIRED": "ईमेल की जरूरत है",
+      "INVALID": "ईमेल अमान्य है"
+    },
+    "PASSWORD":{
+      "REQUIRED": "पासवर्ड की आवश्यकता है",
+      "INVALID": "पासवर्ड गलत है",
+      "MINIMUM": "पासवर्ड कम से कम {{minimum}} अक्षर का होना चाहिए",
+      "MAXIMUM": "पासवर्ड अधिकतम {{maximum}} अक्षर का होना चाहिए"
+    }
   }
 }

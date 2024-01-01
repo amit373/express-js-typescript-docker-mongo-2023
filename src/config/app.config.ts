@@ -1,7 +1,8 @@
 import { NodeEnv } from '@app/interfaces';
 import { getEnv, loadEnv } from '@app/utils';
+import { config } from '@app/config';
 
-loadEnv();
+if (!config) loadEnv();
 
 export default {
   APP_NAME: (getEnv('APP_NAME') as string) || 'ExpressJS',
@@ -17,12 +18,12 @@ export default {
     ORIGIN: '*',
     CREDENTIALS: true,
   },
-  LOGS: {
-    FORMAT: 'dev',
-    DIR: (getEnv('LOG_DIR') as string) || '../../logs',
-    MAX_FILES: (getEnv('LOG_MAX_FILES', { toNumber: true }) as number) || 30,
-    LOG_STORE: (getEnv('LOG_STORE', { toBool: true }) as boolean) || false,
-  },
+  // LOGS: {
+  //   FORMAT: 'dev',
+  //   DIR: (getEnv('LOG_DIR') as string) || '../../logs',
+  //   MAX_FILES: (getEnv('LOG_MAX_FILES', { toNumber: true }) as number) || 30,
+  //   LOG_STORE: (getEnv('LOG_STORE', { toBool: true }) as boolean) || false,
+  // },
   RATE_LIMIT: {
     MAX: 100,
     WINDOW__MS: 60 * 60 * 1000,
