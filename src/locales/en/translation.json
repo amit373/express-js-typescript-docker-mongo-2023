@@ -9,7 +9,8 @@
     "USER_WITH_TOKEN_NOT_EXIST": "The user belonging to this token does no longer exist.",
     "EXCEPTION": "{{message}} 💥 Shutting down...",
     "TO_MANY_REQUEST": "Too many requests from this IP, please try again in an hour!",
-    "NOT_FOUND": "Can't find {{- message}} on this server!"
+    "NOT_FOUND": "Can't find {{- message}} on this server!",
+    "EMAIL_ALREADY_EXIST": "Email is already taken"
   },
   "STATUS": {
     "OK": "Ok",
@@ -33,11 +34,19 @@
       "REQUIRED": "Email is required",
       "INVALID": "Email is invalid"
     },
-    "PASSWORD":{
+    "PASSWORD": {
       "REQUIRED": "Password is required",
       "INVALID": "Password is invalid",
       "MINIMUM": "Password must be at least {{minimum}} characters",
       "MAXIMUM": "Password must be at most {{maximum}} characters"
+    },
+    "FIRST_NAME": {
+      "REQUIRED": "FirstName is required",
+      "MAXIMUM": "FirstName must be at most {{maximum}} characters"
+    },
+    "LAST_NAME": {
+      "REQUIRED": "LastName is required",
+      "MAXIMUM": "LastName must be at most {{maximum}} characters"
     }
   }
 }

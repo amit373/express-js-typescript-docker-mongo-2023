@@ -20,9 +20,6 @@ export interface IUser extends Document {
   getResetPasswordToken: () => string;
 }
 
-// export interface CreateUserDto {
-//   email: string;
-//   password: string;
-// }
+export type LoginUserDto = Pick<IUser, 'email' | 'password'>;
 
-export type CreateUserDto = Pick<IUser, 'email' | 'password'>;
+export type SignupUserDto = Pick<IUser, 'email' | 'password' | 'firstName' | 'lastName'>;

@@ -29,7 +29,6 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: [true, 'Password is Required'],
-      minlength: 8,
       trim: true,
       select: false,
     },
@@ -93,4 +92,4 @@ userSchema.methods['getResetPasswordToken'] = function (): string {
   return resetToken;
 };
 
-export const userModel = model<IUser & Document>('User', userSchema);
+export const UserModel = model<IUser & Document>('User', userSchema);

@@ -1,10 +1,11 @@
 import { type Response, type Request } from 'express';
 import { injectable } from 'tsyringe';
 
+import { type SignupUserDto, type LoginUserDto } from '@app/interfaces';
 import { asyncHandler } from '@app/middlewares';
 import { Controller } from '@app/utils';
-import { type CreateUserDto } from '@app/interfaces';
-import { AuthService } from '../services';
+import { AuthService } from '@app/modules/v1/services';
+import { HttpStatus } from '@app/constants';
 
 @injectable()
 export class AuthController extends Controller {
@@ -35,9 +36,17 @@ export class AuthController extends Controller {
    * definitions:
    *    Signup:
    *      required:
+   *          - firstName
+   *          - lastName
    *          - email
    *          - password
    *      properties:
+   *        firstName:
+   *          type: string
+   *          description: User first name
+   *        lastName:
+   *          type: string
+   *          description: User last name
    *        email:
    *          type: string
    *          description: User email
@@ -46,11 +55,8 @@ export class AuthController extends Controller {
    *          description: User password
    */
   signup = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    this.setResponseData();
-
-    const body = await this.authService.signup(req.body as CreateUserDto);
-    this.setSuccessData(body);
-
+    const createdUser = await this.authService.signup(req.body as SignupUserDto);
+    this.setSuccessData(createdUser, 'STATUS.CREATED', HttpStatus.CREATED);
     this.sendResponse(req, res);
   });
 
@@ -70,12 +76,12 @@ export class AuthController extends Controller {
    *         in: body
    *         required: true
    *         schema:
-   *           $ref: '#/definitions/Signup'
+   *           $ref: '#/definitions/Login'
    *     responses:
    *       200:
    *         description: success
    * definitions:
-   *    Signup:
+   *    Login:
    *      required:
    *          - email
    *          - password
@@ -88,11 +94,8 @@ export class AuthController extends Controller {
    *          description: User password
    */
   login = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    this.setResponseData();
-
-    const body = await this.authService.login(req.body as CreateUserDto);
+    const body = await this.authService.login(req.body as LoginUserDto);
     this.setSuccessData(body);
-
     this.sendResponse(req, res);
   });
 }
