@@ -1,4 +1,4 @@
-const basePath = 'auth';
+const basePath = 'auth' as const;
 
 export const V1RoutesConstants = {
   LOGIN: `/${basePath}/login`,

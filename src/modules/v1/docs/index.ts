@@ -6,16 +6,16 @@ import { ApiVersions } from '@app/constants';
 const swaggerDefinition = {
   swagger: '2.0',
   info: {
-    title: 'REST API',
+    title: 'NodeJS Application',
     version: '1.0.0',
-    description: 'Example docs',
+    description: 'Api documentation',
   },
   host: `localhost:${config.PORT}`,
   basePath: `${config.BASE_URL}/${ApiVersions.V1}`,
   tags: [
     {
       name: 'Health',
-      description: '',
+      description: 'API for health',
     },
     {
       name: 'Auth',
@@ -36,9 +36,11 @@ const swaggerDefinition = {
   produces: ['application/json'],
 };
 
+// Options for swagger-jsdoc
 const options = {
   swaggerDefinition,
   apis: ['**/*.ts'],
 };
 
+// Initialize swagger-jsdoc
 export const swaggerSpecsV1: object = swaggerJSDoc(options);

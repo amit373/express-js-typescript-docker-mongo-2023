@@ -13,7 +13,7 @@ export class IndexController extends Controller {
    *   get:
    *     tags:
    *      - Health
-   *     description: Check server status
+   *     description: Check server status!
    *     produces:
    *       - application/json
    *     responses:

@@ -9,16 +9,15 @@ import hpp from 'hpp';
 import i18next from 'i18next';
 import i18nextFsBackend from 'i18next-fs-backend';
 import { handle as i18nextMiddlewareHandle, LanguageDetector } from 'i18next-http-middleware';
-import swaggerUi from 'swagger-ui-express';
 import { container } from 'tsyringe';
 
 import { cors, LoggerService } from '@app/libs';
 import { config } from '@app/config';
-import { ApiVersions, Locale, RoutesConstants } from '@app/constants';
+import { Locale, RoutesConstants } from '@app/constants';
 import { NotFoundException } from '@app/exceptions';
 import { i18nextConfig } from '@app/locales';
 import { errorMiddleware } from '@app/middlewares';
-import { swaggerSpecsV1, v1Router } from '@app/modules/v1';
+import { v1Router } from '@app/modules/v1';
 
 const loggerService = container.resolve(LoggerService);
 
@@ -56,10 +55,6 @@ function initializeRoutes(): void {
   app.use(v1Router);
 }
 
-function initializeSwagger(): void {
-  app.use(`${config.SWAGGER_URL}/${ApiVersions.V1}`, swaggerUi.serve, swaggerUi.setup(swaggerSpecsV1));
-}
-
 function initializeErrorHandling(): void {
   app.all(RoutesConstants.NOT_FOUND, ({ originalUrl, headers }: Request) => {
     void i18next.changeLanguage((headers['lang'] as string) || Locale.EN);
@@ -71,7 +66,6 @@ function initializeErrorHandling(): void {
 initI18Next();
 initializeMiddlewares();
 initializeRoutes();
-initializeSwagger();
 initializeErrorHandling();
 
 export default app;
