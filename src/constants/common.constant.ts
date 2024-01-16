@@ -25,7 +25,14 @@ export const ApiVersions = {
   V1: 'v1',
 } as const;
 
-export enum Roles {
-  USER = '0',
-  ADMIN = '1',
+export const enum Roles {
+  USER = 'user',
+  ADMIN = 'admin',
 }
+
+export const roles: Record<string, 'user' | 'admin'> = {
+  [Roles.USER]: 'user',
+  [Roles.ADMIN]: 'admin',
+} as const;
+
+export const AUTH_TOKEN = 'authToken';

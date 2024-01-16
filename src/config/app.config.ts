@@ -18,15 +18,17 @@ export default {
     ORIGIN: '*',
     CREDENTIALS: true,
   },
-  // LOGS: {
-  //   FORMAT: 'dev',
-  //   DIR: (getEnv('LOG_DIR') as string) || '../../logs',
-  //   MAX_FILES: (getEnv('LOG_MAX_FILES', { toNumber: true }) as number) || 30,
-  //   LOG_STORE: (getEnv('LOG_STORE', { toBool: true }) as boolean) || false,
-  // },
   RATE_LIMIT: {
     MAX: 100,
     WINDOW__MS: 60 * 60 * 1000,
   },
   EXTENDED: true,
+  JWT: {
+    JWT_SECRET: getEnv('JWT_SECRET') as string,
+    EXPIRES_IN: getEnv('JWT_EXPIRES_IN') as string,
+  },
+  HASH: {
+    SALT: 10,
+    ROUNDS: 16,
+  },
 } as const;

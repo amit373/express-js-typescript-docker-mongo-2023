@@ -5,7 +5,8 @@ import { type SignupUserDto, type LoginUserDto } from '@app/interfaces';
 import { asyncHandler } from '@app/middlewares';
 import { Controller } from '@app/utils';
 import { AuthService } from '@app/modules/v1/services';
-import { HttpStatus } from '@app/constants';
+import { AUTH_TOKEN, HttpStatus } from '@app/constants';
+import { JwtService } from '@app/services';
 
 @injectable()
 export class AuthController extends Controller {
@@ -94,8 +95,20 @@ export class AuthController extends Controller {
    *          description: User password
    */
   login = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const body = await this.authService.login(req.body as LoginUserDto);
-    this.setSuccessData(body);
+    // 1. Validate user email and password then generate token.
+    const { token, user } = await this.authService.login(req.body as LoginUserDto);
+
+    // 2. Prepare cookies options
+    const options = JwtService.getCookieOptions(req);
+
+    // 3. Attach token in request headers and cookies
+    res.setHeader(AUTH_TOKEN, token);
+    res.cookie(AUTH_TOKEN, token, options);
+
+    // 4. Send token in response.
+    this.setSuccessData({ token, user });
+
+    // 5. Return response
     this.sendResponse(req, res);
   });
 }

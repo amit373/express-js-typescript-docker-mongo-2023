@@ -1,13 +1,14 @@
-import { model, Schema, type Document, type CallbackWithoutResultAndOptionalError } from 'mongoose';
+import { model, Schema, type CallbackWithoutResultAndOptionalError } from 'mongoose';
 import { container } from 'tsyringe';
 
 import { BcryptService } from '@app/services';
 import { type IUser } from '@app/interfaces';
 import { Roles } from '@app/constants';
+import { transformedSchemaOptions } from '@app/utils';
 
 const bcryptService = container.resolve(BcryptService);
 
-const userSchema = new Schema(
+const userSchema = new Schema<IUser>(
   {
     firstName: {
       type: String,
@@ -30,7 +31,6 @@ const userSchema = new Schema(
       type: String,
       required: [true, 'Password is Required'],
       trim: true,
-      select: false,
     },
     isVerified: {
       type: Boolean,
@@ -49,7 +49,7 @@ const userSchema = new Schema(
     resetPasswordToken: String,
     resetPasswordExpire: Date,
   },
-  { timestamps: true },
+  transformedSchemaOptions(),
 );
 
 userSchema.index({ firstName: 1, lastName: 1, createdAt: 1, email: 1 });
@@ -92,4 +92,4 @@ userSchema.methods['getResetPasswordToken'] = function (): string {
   return resetToken;
 };
 
-export const UserModel = model<IUser & Document>('User', userSchema);
+export const UserModel = model<IUser>('User', userSchema);

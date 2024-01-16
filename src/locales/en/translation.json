@@ -10,7 +10,8 @@
     "EXCEPTION": "{{message}} 💥 Shutting down...",
     "TO_MANY_REQUEST": "Too many requests from this IP, please try again in an hour!",
     "NOT_FOUND": "Can't find {{- message}} on this server!",
-    "EMAIL_ALREADY_EXIST": "Email is already taken"
+    "EMAIL_ALREADY_EXIST": "Email is already taken",
+    "INVALID_CREDENTIALS": "Invalid credentials"
   },
   "STATUS": {
     "OK": "Ok",

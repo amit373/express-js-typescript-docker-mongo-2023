@@ -1,3 +1,4 @@
+import { config } from '@app/config';
 import { compare, genSalt, hash } from 'bcrypt';
 import { createHash, randomBytes } from 'crypto';
 import { injectable } from 'tsyringe';
@@ -5,7 +6,7 @@ import { injectable } from 'tsyringe';
 @injectable()
 export class BcryptService {
   async hashPassword(password: string): Promise<string> {
-    const salt: string = await genSalt(10);
+    const salt: string = await genSalt(config.HASH.SALT);
     const hashedPassword: string = await hash(password, salt);
     return hashedPassword;
   }
@@ -24,7 +25,7 @@ export class BcryptService {
     // Set expire 10 mins
     const resetPasswordExpire: Date = new Date(Date.now() + minutes * 60 * 1000);
     // Generate token
-    resetToken = randomBytes(16).toString('hex');
+    resetToken = randomBytes(config.HASH.ROUNDS).toString('hex');
 
     // Hash token and set to resetPasswordToken field
     const resetPasswordToken: string = createHash('sha256').update(resetToken).digest('hex');

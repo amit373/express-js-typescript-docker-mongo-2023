@@ -21,6 +21,10 @@ const swaggerDefinition = {
       name: 'Auth',
       description: 'API for auth',
     },
+    {
+      name: 'User',
+      description: 'API for user',
+    },
   ],
   schemes: ['http', 'https'],
   securityDefinitions: {

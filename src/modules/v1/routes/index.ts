@@ -8,13 +8,15 @@ import { swaggerSpecsV1 } from '@app/modules/v1';
 
 import { indexRouter } from './index.route';
 import { authRouter } from './auth.route';
+import { userRouter } from './user.route';
 
 const v1Router: Router = Router();
 
-const basePath: string = `${config.BASE_URL}/${ApiVersions.V1}`;
+const basePath = `${config.BASE_URL}/${ApiVersions.V1}` as const;
 
 v1Router.use(basePath, [setLanguage], indexRouter);
 v1Router.use(basePath, [setLanguage], authRouter);
+v1Router.use(basePath, [setLanguage], userRouter);
 v1Router.use(`${config.SWAGGER_URL}/${ApiVersions.V1}`, swaggerUiServe, swaggerUiSetup(swaggerSpecsV1));
 
 export { v1Router };

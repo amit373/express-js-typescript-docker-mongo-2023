@@ -3,8 +3,11 @@ import { type Roles } from '@app/constants';
 
 export interface IUser extends Document {
   _id: ObjectId;
+  id: ObjectId;
+  toObject: () => IUser;
   firstName: string;
   lastName: string;
+  userRole: Roles;
   email: string;
   password: string;
   isVerified: boolean;
