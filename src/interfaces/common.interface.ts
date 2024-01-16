@@ -1,4 +1,7 @@
-import { type Locale } from '@app/constants';
+import { type Request } from 'express';
+import { type xApiKey, type AUTH_TOKEN, type Locale } from '@app/constants';
+
+import { type IUser } from './user.interface';
 
 export type ILocale = (typeof Locale)[keyof typeof Locale];
 
@@ -38,4 +41,16 @@ export interface IQueryString {
   page?: number;
   limit?: number;
   [key: string]: string | number | undefined;
+}
+
+export interface IRequest extends Request {
+  user?: IUser;
+  headers: {
+    authorization: string | undefined;
+    [xApiKey]: string | undefined;
+  };
+  cookies: {
+    [AUTH_TOKEN]: string;
+    [xApiKey]: string | undefined;
+  };
 }

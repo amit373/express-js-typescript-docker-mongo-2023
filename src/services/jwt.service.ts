@@ -1,19 +1,22 @@
-import { decode, type JwtPayload, sign, verify } from 'jsonwebtoken';
+import { decode, sign, verify } from 'jsonwebtoken';
 import { type ObjectId } from 'mongoose';
 import { injectable } from 'tsyringe';
 import { config } from '@app/config';
 import { type Request } from 'express';
-
+type JWTPayload<T> = {
+  iat: number;
+  exp: number;
+} & T;
 @injectable()
 export class JwtService {
-  async verifyToken(token: string): Promise<string | JwtPayload> {
+  async verifyToken<T>(token: string): Promise<JWTPayload<T>> {
     const decoded = verify(token, config.JWT.JWT_SECRET);
-    return decoded;
+    return decoded as JWTPayload<T>;
   }
 
-  decodeToken(token: string): string | JwtPayload | null {
+  decodeToken<T = null>(token: string): JWTPayload<T> {
     const decodedToken = decode(token);
-    return decodedToken;
+    return decodedToken as JWTPayload<T>;
   }
 
   signToken(id: string | ObjectId): string {

@@ -22,6 +22,9 @@ export class UserController extends Controller {
    *     description: Fetch all users
    *     produces:
    *       - application/json
+   *     security:
+   *       - apiKey: []
+   *       - bearerAuth: []
    *     responses:
    *       200:
    *         description: success

@@ -11,7 +11,8 @@
     "TO_MANY_REQUEST": "इस आईपी से बहुत सारे अनुरोध, कृपया एक घंटे में पुनः प्रयास करें!",
     "NOT_FOUND": "इस सर्वर पर {{-message}} नहीं मिल सका!",
     "EMAIL_ALREADY_EXIST": "ईमेल पहले से ही लिया जा चुका है",
-    "INVALID_CREDENTIALS": "अवैध प्रत्यय पत्र"
+    "INVALID_CREDENTIALS": "अवैध प्रत्यय पत्र",
+    "INVALID_API_KEY": "अमान्य एपीआई कुंजी"
   },
   "STATUS": {
     "OK": "ठीक है",

@@ -31,4 +31,5 @@ export default {
     SALT: 10,
     ROUNDS: 16,
   },
+  API_KEY: 'V37Z8VF48P6UZJ855B',
 } as const;

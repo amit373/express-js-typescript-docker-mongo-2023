@@ -35,6 +35,11 @@ const swaggerDefinition = {
       bearerFormat: 'JWT',
       in: 'header',
     },
+    apiKey: {
+      type: 'apiKey',
+      name: 'x-api-key',
+      in: 'header',
+    },
   },
   consumes: ['application/json'],
   produces: ['application/json'],

@@ -82,9 +82,10 @@ export const getEnv = (
     toInteger: false,
     toNumber: false,
   },
+  isOptional: boolean = false,
 ): string | number | boolean => {
   const value = process?.env[key] ?? '';
-  if (isEmpty(value)) {
+  if (isEmpty(value) && !isOptional) {
     throw new Error(`[ENV] ${key} is not set.`);
   }
   if (options?.toNumber) {

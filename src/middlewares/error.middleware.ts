@@ -29,7 +29,7 @@ const handleJWTExpiredError = (err: IError): UnauthorizedException => {
 
 const sendError = (err: IError, req: Request, res: Response): Response<any, Record<string, any>> => {
   const message: string = i18next.t(err.message);
-  const status = (err as any).status as number;
+  const status = err.status;
   const { method, path } = req;
   if (config.isDevelopment) {
     console.error('Error 💥', {

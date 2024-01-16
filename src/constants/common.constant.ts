@@ -36,3 +36,5 @@ export const roles: Record<string, 'user' | 'admin'> = {
 } as const;
 
 export const AUTH_TOKEN = 'authToken';
+
+export const xApiKey = 'x-api-key';
