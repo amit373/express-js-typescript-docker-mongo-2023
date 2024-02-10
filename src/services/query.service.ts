@@ -1,13 +1,15 @@
 import { IQueryString, type IPagination } from '@app/interfaces';
-import { Query } from 'mongoose';
+import { type FilterQuery, type Query } from 'mongoose';
 import { injectable } from 'tsyringe';
+
+type DocumentQuery<T> = Query<T[], T>;
 
 @injectable()
 export class QueryService<T> {
-  public query: Query<T[], T>;
+  public query: DocumentQuery<T>;
   private readonly queryString: IQueryString;
 
-  constructor(query: Query<T[], T>, queryString: IQueryString) {
+  constructor(query: DocumentQuery<T>, queryString: IQueryString) {
     this.query = query;
     this.queryString = queryString;
   }
@@ -18,6 +20,18 @@ export class QueryService<T> {
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match: string) => `$${match}`);
     const query = JSON.parse(queryStr) as T[];
     this.query = this.query.find(query);
+    return this;
+  }
+
+  search(): this {
+    const { searchKey, searchFields } = this.queryString;
+    if (searchKey && Array.isArray(searchFields) && searchFields.length > 0) {
+      const orClauses = searchFields.map((field: string) => ({
+        [field]: { $regex: new RegExp(searchKey, 'i') },
+      })) as Array<FilterQuery<T>>;
+      const query = this.query.or(orClauses);
+      this.query = query;
+    }
     return this;
   }
 
@@ -52,13 +66,14 @@ export class QueryService<T> {
       const docs: T[] = await this.query.skip(skip).limit(limit).exec();
 
       // Count total documents
-      const { totalDocs } = await this.countDocuments();
+      const { totalDocs } = await this.countDocuments(this.query.getQuery() as DocumentQuery<T>);
 
+      const ONE = 1;
       // Prepare the pagination
       const totalPages: number = Math.ceil(totalDocs / limit);
-      const nextPage: number | null = page < totalPages ? page + 1 : null;
-      const prevPage: number | null = page > 1 ? page - 1 : null;
-      const hasPrevPage: boolean = page > 1;
+      const nextPage: number | null = page < totalPages ? page + ONE : null;
+      const prevPage: number | null = page > ONE ? page - ONE : null;
+      const hasPrevPage: boolean = page > ONE;
       const hasNextPage: boolean = page < totalPages;
 
       // Create and return the pagination object
@@ -81,10 +96,10 @@ export class QueryService<T> {
     }
   }
 
-  async countDocuments(): Promise<{
+  async countDocuments(queryOptions: DocumentQuery<T>): Promise<{
     totalDocs: number;
   }> {
-    const totalDocs: number = await this.query.model.countDocuments();
+    const totalDocs: number = await this.query.model.countDocuments(queryOptions);
     return {
       totalDocs,
     };

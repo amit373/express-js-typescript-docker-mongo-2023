@@ -1,7 +1,7 @@
-import { type Response, type Request } from 'express';
+import { type Response } from 'express';
 import { injectable } from 'tsyringe';
 
-import { type IQuery } from '@app/interfaces';
+import { type IRequest, type IQuery } from '@app/interfaces';
 import { asyncHandler } from '@app/middlewares';
 import { Controller } from '@app/utils';
 import { UserService } from '@app/modules/v1/services';
@@ -29,8 +29,8 @@ export class UserController extends Controller {
    *       200:
    *         description: success
    */
-  fetchUsers = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const users = await this.userService.fetchUsers(req.query as unknown as IQuery);
+  fetchUsers = asyncHandler(async (req: IRequest<any, any, IQuery>, res: Response): Promise<void> => {
+    const users = await this.userService.fetchUsers(req.query);
     this.setSuccessData(users);
     this.sendResponse(req, res);
   });

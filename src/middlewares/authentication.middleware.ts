@@ -7,7 +7,7 @@ import { JwtService } from '@app/services';
 import { UserModel } from '@app/models';
 import { AUTH_TOKEN } from '@app/constants';
 import { type IRequest, type IUser } from '@app/interfaces';
-import { asyncHandler } from './async.middleware';
+import { asyncHandler } from '@app/middlewares';
 
 const jwtService: JwtService = container.resolve(JwtService);
 

@@ -20,12 +20,16 @@ export class BaseRepository {
       queryService = queryService.limitFields();
     }
 
+    if (options?.search) {
+      queryService = queryService.search();
+    }
+
     if (options?.paginate) {
       const result = await queryService.paginate();
       return result as unknown as T[];
     } else {
       if (options?.totalCount) {
-        const { totalDocs } = await queryService.countDocuments();
+        const { totalDocs } = await queryService.countDocuments(queryService.query);
         const docs = await queryService.query;
         return {
           docs,

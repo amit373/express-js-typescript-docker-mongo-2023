@@ -38,3 +38,8 @@ export const roles: Record<string, 'user' | 'admin'> = {
 export const AUTH_TOKEN = 'authToken';
 
 export const xApiKey = 'x-api-key';
+
+export const defaultPagination = {
+  page: 1,
+  limit: 10,
+} as const;

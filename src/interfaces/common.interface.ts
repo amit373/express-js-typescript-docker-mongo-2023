@@ -1,4 +1,5 @@
 import { type Request } from 'express';
+import { type IncomingHttpHeaders } from 'http';
 import { type xApiKey, type AUTH_TOKEN, type Locale } from '@app/constants';
 
 import { type IUser } from './user.interface';
@@ -10,6 +11,9 @@ export interface IQuery {
   fields: string;
   page: number;
   limit: number;
+  searchKey: string;
+  searchFields: string[];
+  totalCount: boolean | string;
 }
 
 export interface IPagination<T> {
@@ -33,6 +37,7 @@ export interface IQueryOptions {
   paginate: boolean;
   limitFields: boolean;
   totalCount: boolean;
+  search: boolean;
 }
 
 export interface IQueryString {
@@ -40,17 +45,25 @@ export interface IQueryString {
   fields?: string;
   page?: number;
   limit?: number;
-  [key: string]: string | number | undefined;
+  searchKey?: string;
+  searchFields?: string[];
+  [key: string]: unknown | string | string[] | number | undefined;
+  totalCount?: boolean;
 }
 
-export interface IRequest extends Request {
+interface CustomCookies {
+  [xApiKey]: string;
+  [AUTH_TOKEN]: string;
+}
+interface CustomHeaders {
+  authorization?: string;
+  lang: ILocale;
+}
+
+type ExtendedHeaders = IncomingHttpHeaders & CustomHeaders;
+
+export interface IRequest<TParams = any, TBody = any, TQuery = any, TResBody = any> extends Request<TParams, TBody, TResBody, TQuery> {
   user?: IUser;
-  headers: {
-    authorization: string | undefined;
-    [xApiKey]: string | undefined;
-  };
-  cookies: {
-    [AUTH_TOKEN]: string;
-    [xApiKey]: string | undefined;
-  };
+  headers: ExtendedHeaders;
+  cookies: CustomCookies;
 }

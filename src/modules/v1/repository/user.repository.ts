@@ -10,16 +10,7 @@ export class UserRepository extends BaseRepository {
     return await UserModel.findOne(query);
   }
 
-  async find(
-    query: IQueryString = {} satisfies IQueryString,
-    options: IQueryOptions = {
-      filter: false,
-      limitFields: true,
-      paginate: false,
-      sort: true,
-      totalCount: false,
-    },
-  ): Promise<IUser[]> {
+  async find(query: IQueryString = {} satisfies IQueryString, options: IQueryOptions): Promise<IUser[]> {
     return await this.prepareQuery<IUser>(UserModel, query, options);
   }
 

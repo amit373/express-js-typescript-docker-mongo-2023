@@ -1,7 +1,7 @@
-import { type Response, type Request } from 'express';
+import { type Response } from 'express';
 import { injectable } from 'tsyringe';
 
-import { type SignupUserDto, type LoginUserDto } from '@app/interfaces';
+import { type SignupUserDto, type LoginUserDto, type IRequest } from '@app/interfaces';
 import { asyncHandler } from '@app/middlewares';
 import { Controller } from '@app/utils';
 import { AuthService } from '@app/modules/v1/services';
@@ -31,9 +31,16 @@ export class AuthController extends Controller {
    *         required: true
    *         schema:
    *           $ref: '#/definitions/Signup'
+   *         example:
+   *           firstName: "John"
+   *           lastName: "Doe"
+   *           email: "string@gmail.com"
+   *           password: "string"
    *     responses:
    *       200:
    *         description: success
+   *     security:
+   *       - apiKey: []
    * definitions:
    *    Signup:
    *      required:
@@ -55,7 +62,7 @@ export class AuthController extends Controller {
    *          type: string
    *          description: User password
    */
-  signup = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+  signup = asyncHandler(async (req: IRequest, res: Response): Promise<void> => {
     const createdUser = await this.authService.signup(req.body as SignupUserDto);
     this.setSuccessData(createdUser, 'STATUS.CREATED', HttpStatus.CREATED);
     this.sendResponse(req, res);
@@ -78,9 +85,14 @@ export class AuthController extends Controller {
    *         required: true
    *         schema:
    *           $ref: '#/definitions/Login'
+   *         example:
+   *           email: "string@gmail.com"
+   *           password: "string"
    *     responses:
    *       200:
    *         description: success
+   *     security:
+   *       - apiKey: []
    * definitions:
    *    Login:
    *      required:
@@ -94,7 +106,7 @@ export class AuthController extends Controller {
    *          type: string
    *          description: User password
    */
-  login = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+  login = asyncHandler(async (req: IRequest, res: Response): Promise<void> => {
     // 1. Validate user email and password then generate token.
     const { token, user } = await this.authService.login(req.body as LoginUserDto);
 

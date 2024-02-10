@@ -6,3 +6,12 @@ export const V1RoutesConstants = {
   USERS: '/users',
   ROOT: '/',
 } as const;
+
+export const fetchUsersFields = {
+  firstName: 'firstName',
+  lastName: 'lastName',
+  email: 'email',
+  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;

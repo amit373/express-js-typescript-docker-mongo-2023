@@ -1,18 +1,20 @@
-import { type Request, type Response } from 'express';
+import { type Response } from 'express';
 import { container } from 'tsyringe';
 import i18next from 'i18next';
 
 import { HttpStatus, Locale } from '@app/constants';
 import { LoggerService } from '@app/libs';
-import { type ILocale } from '@app/interfaces';
+import { type IRequest, type ILocale } from '@app/interfaces';
 
 interface ResponseData<T = any> {
   success: boolean;
   status: number;
   message: string;
   data: T | null;
-  lang?: ILocale;
+  lang: ILocale;
 }
+
+// FIXME: { success: boolean, code: number, message: string, data: any, lang: ILocale }
 
 const loggerService = container.resolve(LoggerService);
 
@@ -56,9 +58,9 @@ export class Controller<T = any> {
     };
   }
 
-  protected sendResponse(req: Request, res: Response): Response<ResponseData> {
-    this.responseData.lang = ((req.headers['lang'] as string) || Locale.EN) as ILocale;
-    loggerService.info(`${HttpStatus.CREATED} - ${req.originalUrl} [${req.method}] - [${this.responseData.lang}] - ${this.responseData.message} `);
+  protected sendResponse({ originalUrl, method, headers: { lang } }: IRequest, res: Response): Response<ResponseData> {
+    this.responseData.lang = lang || this.responseData.lang;
+    loggerService.info(`${this.responseData.status} - ${originalUrl} [${method}] - [${this.responseData.lang}] - ${this.responseData.message} `);
     return res.status(this.responseData.status).json(this.responseData);
   }
 }
