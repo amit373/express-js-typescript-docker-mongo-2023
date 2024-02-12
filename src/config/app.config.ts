@@ -9,6 +9,7 @@ export default {
   PORT: getEnv('PORT', { toNumber: true }) as number,
   NODE_ENV: getEnv('NODE_ENV'),
   isDevelopment: getEnv('NODE_ENV') === NodeEnv.DEVELOPMENT,
+  logPayloadInLogger: true,
   BASE_URL: '/api',
   SWAGGER_URL: '/api-docs',
   NO_COLOR: getEnv('NO_COLOR', {

@@ -8,5 +8,8 @@ const userController: UserController = container.resolve(UserController);
 const userRouter: Router = Router();
 
 userRouter.get(V1RoutesConstants.USERS, userController.fetchUsers);
+userRouter.get(V1RoutesConstants.USER_ID, userController.fetchUser);
+userRouter.put(V1RoutesConstants.USER_ID, userController.updateUser);
+userRouter.delete(V1RoutesConstants.USER_ID, userController.deleteUser);
 
 export { userRouter };

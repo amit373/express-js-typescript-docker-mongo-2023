@@ -9,12 +9,14 @@ import { loadEnv, toBool, toNumber } from '@app/utils';
 
 if (!config) loadEnv();
 
-const LOGS_DIR = (process.env as any)?.LOGS_DIR as string;
-const APP_NAME = (process.env as any).APP_NAME as string;
-const LOG_STORE = toBool((process.env as any).LOG_STORE as string);
-const LOG_MAX_FILES = toNumber((process.env as any).LOG_MAX_FILES as string);
+const env = process.env;
 
-const logDir = join(__dirname, LOGS_DIR);
+const LOGS_DIR = env['LOGS_DIR'];
+const APP_NAME = env['APP_NAME'];
+const LOG_STORE = toBool(env['LOG_STORE']!);
+const LOG_MAX_FILES = toNumber(env['LOG_MAX_FILES']!);
+
+const logDir = join(__dirname, LOGS_DIR!);
 
 if (!existsSync(logDir)) {
   mkdirSync(logDir);

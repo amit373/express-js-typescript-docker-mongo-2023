@@ -123,4 +123,122 @@ export class AuthController extends Controller {
     // 5. Return response
     this.sendResponse(req, res);
   });
+
+  /**
+   * @swagger
+   *
+   * /auth/me:
+   *   get:
+   *     tags:
+   *      - Auth
+   *     description: Get current user information
+   *     produces:
+   *       - application/json
+   *     responses:
+   *       200:
+   *         description: success
+   *     security:
+   *       - apiKey: []
+   *       - bearerAuth: []
+   */
+  me = asyncHandler(async (req: IRequest, res: Response): Promise<void> => {
+    this.sendResponse(req, res);
+  });
+
+  /**
+   * @swagger
+   *
+   * /auth/forgotPassword:
+   *   post:
+   *     tags:
+   *      - Auth
+   *     description: Forgot password to the application
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - name: body
+   *         description: user data.
+   *         in: body
+   *         required: true
+   *         schema:
+   *           $ref: '#/definitions/ForgotPassword'
+   *         example:
+   *           email: "string@gmail.com"
+   *     responses:
+   *       200:
+   *         description: success
+   *     security:
+   *       - apiKey: []
+   * definitions:
+   *    ForgotPassword:
+   *      required:
+   *          - email
+   *      properties:
+   *        email:
+   *          type: string
+   *          description: User email
+   */
+  forgotPassword = asyncHandler(async (req: IRequest, res: Response): Promise<void> => {
+    this.sendResponse(req, res);
+  });
+
+  /**
+   * @swagger
+   *
+   * /auth/resetPassword/:resetToken:
+   *   put:
+   *     tags:
+   *      - Auth
+   *     description: Reset password to the application
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - name: resetToken
+   *         description: token received in email.
+   *         in: params
+   *         required: true
+   *       - name: body
+   *         description: request body
+   *         in: body
+   *         required: true
+   *         schema:
+   *           $ref: '#/definitions/ResetPassword'
+   *     responses:
+   *       200:
+   *         description: success
+   *     security:
+   *       - apiKey: []
+   * definitions:
+   *    ResetPassword:
+   *      required:
+   *          - password
+   *      properties:
+   *        password:
+   *          type: string
+   *          description: User password
+   */
+  resetPassword = asyncHandler(async (req: IRequest, res: Response): Promise<void> => {
+    this.sendResponse(req, res);
+  });
+
+  /**
+   * @swagger
+   *
+   * /auth/logout:
+   *   get:
+   *     tags:
+   *      - Auth
+   *     description: Logout current user information
+   *     produces:
+   *       - application/json
+   *     responses:
+   *       200:
+   *         description: success
+   *     security:
+   *       - apiKey: []
+   *       - bearerAuth: []
+   */
+  logout = asyncHandler(async (req: IRequest, res: Response): Promise<void> => {
+    this.sendResponse(req, res);
+  });
 }

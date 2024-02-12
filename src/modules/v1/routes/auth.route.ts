@@ -30,4 +30,9 @@ authRouter.post(
   authController.signup,
 );
 
+authRouter.get(V1RoutesConstants.ME, authController.me);
+authRouter.post(V1RoutesConstants.FORGOT_PASSWORD, authController.forgotPassword);
+authRouter.put(V1RoutesConstants.RESET_PASSWORD, authController.resetPassword);
+authRouter.get(V1RoutesConstants.LOGOUT, authController.logout);
+
 export { authRouter };

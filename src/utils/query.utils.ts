@@ -41,7 +41,7 @@ export function prepareQueryOptions(query: IQuery): {
     query.sort = sort.toString();
   }
   if (!isUndefined(query?.totalCount)) {
-    options.sort = query?.totalCount === 'true';
+    options.totalCount = query?.totalCount === 'true';
   }
   return {
     query,
