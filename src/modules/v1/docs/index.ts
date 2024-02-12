@@ -2,15 +2,10 @@ import swaggerJSDoc from 'swagger-jsdoc';
 
 import { config } from '@app/config';
 import { ApiVersions } from '@app/constants';
+import { defaultSwaggerConfig } from '@app/utils';
 
-const swaggerDefinition = {
-  swagger: '2.0',
-  info: {
-    title: 'NodeJS Application',
-    version: '1.0.0',
-    description: 'Api documentation',
-  },
-  host: `localhost:${config.PORT}`,
+export const swaggerDefinition = {
+  ...defaultSwaggerConfig,
   basePath: `${config.BASE_URL}/${ApiVersions.V1}`,
   tags: [
     {
@@ -26,23 +21,6 @@ const swaggerDefinition = {
       description: 'API for user',
     },
   ],
-  schemes: ['http', 'https'],
-  securityDefinitions: {
-    bearerAuth: {
-      type: 'apiKey',
-      name: 'Authorization',
-      scheme: 'bearer',
-      bearerFormat: 'JWT',
-      in: 'header',
-    },
-    apiKey: {
-      type: 'apiKey',
-      name: 'x-api-key',
-      in: 'header',
-    },
-  },
-  consumes: ['application/json'],
-  produces: ['application/json'],
 };
 
 // Options for swagger-jsdoc
